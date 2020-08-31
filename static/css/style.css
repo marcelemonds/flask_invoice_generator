@@ -1,0 +1,7 @@
+.card {
+    margin-top: 1em;
+}
+
+.hidden-content {
+    display: none !important;
+}

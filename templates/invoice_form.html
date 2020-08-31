@@ -1,4 +1,94 @@
 {% extends "layouts/main.html" %}
 
 {% block content %}
+<!-- positions form start -->
+<div class="col d-flex justify-content-center">
+    <div class="card w-75">
+        <div class="card-body">
+            <form>
+                {{ positions_form.csrf_token }}
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                        {{ positions_form.unit.label }}
+                        {{ positions_form.unit(class="form-control", id="unit") }}
+                        <!-- Error Message -->
+                        {% for error in positions_form.unit.errors %}
+                        <div class="invalid-feedback">
+                            {{ error }}
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <div class="form-group col-md-4">
+                        {{ positions_form.amount.label }}
+                        {{ positions_form.amount(class="form-control", id="amount") }}
+                        <!-- Error Message -->
+                        {% for error in positions_form.amount.errors %}
+                        <div class="invalid-feedback">
+                            {{ error }}
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <div class="form-group col-md-4">
+                        {{ positions_form.price.label }}
+                        <div class="input-group">
+                            {{ positions_form.price(class="form-control", id="price") }}
+                            <div class="input-group-append">
+                                <span class="input-group-text">€</span>
+                            </div>
+                        </div>
+                        <!-- Error Message -->
+                        {% for error in positions_form.price.errors %}
+                        <div class="invalid-feedback">
+                            {{ error }}
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="form-group">
+                    {{ positions_form.description.label }}
+                    {{ positions_form.description(class="form-control", id="description") }}
+                    <!-- Error Message -->
+                    {% for error in positions_form.description.errors %}
+                    <div class="invalid-feedback">
+                        {{ error }}
+                    </div>
+                    {% endfor %}
+                </div>
+                <div class="form-group text-center">
+                    <button class="btn btn-primary" id="positions-submit" type="submit">Add Position</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- positions form end -->
+<!-- positions table start -->
+<div class="hidden-content" id="positions-table-container">
+    <div class="col d-flex justify-content-center" id="positions-card">
+        <div class="card w-75">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>Unit</th>
+                                <th>Amount</th>
+                                <th>Description</th>
+                                <th>Price</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+                        <tbody id="positions-table-body"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- positions table end -->
+{% endblock %}
+{% block script %}
+<script>
+    var url = "{{ url_for('positions_add') }}"
+</script>
 {% endblock %}

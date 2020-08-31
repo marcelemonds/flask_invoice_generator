@@ -31,25 +31,4 @@ def create_app():
         )
 
 
-    @app.route('/positions', methods=['POST'])
-    def positions_add():
-        positions_form = PositionsForm(prefix='positions')
-        success = False
-        data = {}
-        if positions_form.validate_on_submit():
-            data = {
-                'unit': positions_form.unit.data,
-                'amount': positions_form.amount.data,
-                'price': positions_form.price.data,
-                'description': positions_form.description.data
-            }
-            success = True
-
-        body = {
-            'success': success,
-            'data': data
-        }
-        print(body)
-        return jsonify(body), 200
-
     return app

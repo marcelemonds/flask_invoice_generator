@@ -18,7 +18,7 @@ def negativ_check(form, field):
 
 class PositionsForm(FlaskForm):
     amount = FloatField('Amount', validators=[DataRequired(), negativ_check])
-    unit = SelectField('Unit', choices=[('','...'),('Conversion','Conversion'),('Hour','Hour')], validators=[DataRequired()])
+    unit = SelectField('Unit', choices=[('', '...'), ('Conversion', 'Conversion'), ('Hour', 'Hour')], validators=[DataRequired()])
     price = FloatField('Price/Unit', validators=[DataRequired(), negativ_check])
     description = StringField('Description', validators=[DataRequired(), Length(max=500)])
 

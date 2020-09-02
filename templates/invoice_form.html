@@ -73,68 +73,76 @@
     </div>
 </div>
 <!-- positions form end -->
+{% if positions %}
 <!-- positions table start -->
-<div class="hidden-content" id="positions-table-container">
-    <div class="col d-flex justify-content-center">
-        <div class="card w-75">
-            <div class="card-body">
-                <div class="table-responsive">
-                    <table class="table table-hover">
-                        <thead class="thead-dark">
-                            <tr>
-                                <th>Unit</th>
-                                <th>Amount</th>
-                                <th>Description</th>
-                                <th>Price</th>
-                                <th>Total</th>
-                            </tr>
-                        </thead>
-                        <tbody id="positions-table-body"></tbody>
-                    </table>
-                </div>
+<div class="col d-flex justify-content-center">
+    <div class="card w-75">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>Unit</th>
+                            <th>Amount</th>
+                            <th>Description</th>
+                            <th>Price</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody id="positions-table-body">
+                        {% for position in positions %}
+                        <tr>
+                            <td>{{ position.unit }}</td>
+                            <td>{{ position.amount }}</td>
+                            <td>{{ position.description }}</td>
+                            <td>{{ position.price }}</td>
+                            <td>{{ position.total }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
 </div>
 <!-- positions table end -->
 <!-- invoice form start -->
-<div class="hidden-content" id="invoice-card-container">
-    <div class="col d-flex justify-content-center">
-        <div class="card w-75">
-            <div class="card-body">
-                <form>
-                    {{ invoice_form.csrf_token }}
-                    <div class="form-row">
-                        <div class="form-group col-md-6">
-                            {{ invoice_form.start_date.label }}
-                            {{ invoice_form.start_date(class="form-control", id="start_date") }}
-                            <!-- Error Message -->
-                            {% for error in invoice_form.start_date.errors %}
-                            <div class="invalid-feedback">
-                                {{ error }}
-                            </div>
-                            {% endfor %}
+<div class="col d-flex justify-content-center">
+    <div class="card w-75">
+        <div class="card-body">
+            <form>
+                {{ invoice_form.csrf_token }}
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        {{ invoice_form.start_date.label }}
+                        {{ invoice_form.start_date(class="form-control", id="start_date") }}
+                        <!-- Error Message -->
+                        {% for error in invoice_form.start_date.errors %}
+                        <div class="invalid-feedback">
+                            {{ error }}
                         </div>
-                        <div class="form-group col-md-6">
-                            {{ invoice_form.end_date.label }}
-                            {{ invoice_form.end_date(class="form-control", id="end_date") }}
-                            <!-- Error Message -->
-                            {% for error in invoice_form.end_date.errors %}
-                            <div class="invalid-feedback">
-                                {{ error }}
-                            </div>
-                            {% endfor %}
+                        {% endfor %}
+                    </div>
+                    <div class="form-group col-md-6">
+                        {{ invoice_form.end_date.label }}
+                        {{ invoice_form.end_date(class="form-control", id="end_date") }}
+                        <!-- Error Message -->
+                        {% for error in invoice_form.end_date.errors %}
+                        <div class="invalid-feedback">
+                            {{ error }}
                         </div>
+                        {% endfor %}
                     </div>
-                    <div class="form-group text-center">
-                        <button class="btn btn-primary" id="invoice-submit" type="submit">Create Invoice</button>
-                    </div>
-                </form>
-            </div>
+                </div>
+                <div class="form-group text-center">
+                    <button class="btn btn-primary" id="invoice-submit" type="submit">Create Invoice</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
 <!-- invoice form end -->
+{% endif %}
 {% endblock %}
 {% block script %}
 {% endblock %}

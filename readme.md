@@ -83,6 +83,7 @@ InvoiceForm submission
 DELETE '/position_delete'
 ```
 - Deletes a certain position from `Positions` specified by the id in the request body.
+
 Request body:
 ```
 {

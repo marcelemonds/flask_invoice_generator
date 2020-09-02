@@ -1,4 +1,22 @@
 {% extends "layouts/main.html" %}
 
 {% block content %}
+<div class="col d-flex justify-content-center">
+    <div class="card w-75 top-margin">
+        <div class="card-body">
+            <h2 class="text-center">Welcome to the Invoice Generator Project.</h2>
+            <p class="text-center">
+                This project demonstrate how to build a simple flask app to generate pdf invoices using flask, flask-sqlalchemy, bootstrap and weasyprint. 
+                A common and pure python way to create PDFs is using Reportlab. 
+                The problem with Reportlab is that it can be quite time consuming to get the PDFs' design as you want it to be. In this project I'm going to weasyprint to create PDF invoice from a HTML template.
+            </p>
+            <p class="text-center">
+                For further information please read the documentation on my <a href="https://github.com/marcelemonds/invoice_generator" target="_blank">GitHub-Profile</a>.
+            </p>
+            <p class="text-center">
+                Feel free test the generator. If you have suggestions on how to improve, please contact me.
+            </p>
+        </div>
+    </div>
+</div>
 {% endblock %}

@@ -14,7 +14,6 @@ from decouple import config
 from weasyprint import HTML
 import io
 import datetime
-from random import randint
 
 
 def create_app():
@@ -22,6 +21,11 @@ def create_app():
     app.secret_key = config('SECRET_KEY', default='you-will-never-guess')
     app.jinja_env.filters['currencyFormat'] = currencyFormat
     setup_db(app)
+    '''
+    uncomment the following line to initialize the databse
+    !! NOTE THIS WILL DROP ALL RECORDS AND START YOUR DB FROM SCRATCH
+    !! NOTE THIS MUST BE UNCOMMENTED ON FIRST RUN
+    '''
     db_drop_and_create_all()
 
     @app.route('/')
@@ -56,7 +60,6 @@ def create_app():
                 new_position.insert()
 
                 flash('Position succesfully added!', 'success')
-                success = True
             elif invoice_form.validate_on_submit():
                 form_invoice_details = invoice_form.data
                 form_invoice_details.pop('csrf_token', None)
@@ -70,14 +73,14 @@ def create_app():
                 total = 0
                 for position in positions:
                     total += position.total
-                today = datetime.date.today()
-                payment_due = today + datetime.timedelta(days=14)
+                created = datetime.date.today()
+                payment_due = created + datetime.timedelta(days=14)
 
                 return render_template('/invoice_details.html',
                                        title='Invoice Details',
                                        invoice_details=invoice_details,
                                        positions=positions,
-                                       today=today,
+                                       created=created,
                                        payment_due=payment_due,
                                        total=total
                                        )
@@ -121,9 +124,9 @@ def create_app():
         for position in positions:
             total += position.total
         created = datetime.date.today()
-        payment_due = today + datetime.timedelta(days=14)
+        payment_due = created + datetime.timedelta(days=14)
         try:
-            rendered = render_template('/invoice_details_pdf.html',
+            rendered = render_template('invoice_details_pdf.html',
                                        invoice_details=invoice_details,
                                        positions=positions,
                                        created=created,
@@ -131,10 +134,10 @@ def create_app():
                                        total=total
                                        )
             html = HTML(string=rendered)
-            invoice_pdf = html.write_pdf('/invoice_details_pdf.html')
+            invoice_pdf = html.write_pdf()
             return send_file(
                 io.BytesIO(invoice_pdf),
-                attachement_filename=f'invoice_{invoice_details.invoice_number}'
+                attachment_filename=f'invoice_{invoice_details.invoice_number}.pdf'
                 )
         except Exception as e:
             flash(
@@ -147,7 +150,7 @@ def create_app():
                                    title='Invoice Details',
                                    invoice_details=invoice_details,
                                    positions=positions,
-                                   today=today,
+                                   created=created,
                                    payment_due=payment_due,
                                    total=total
                                    )

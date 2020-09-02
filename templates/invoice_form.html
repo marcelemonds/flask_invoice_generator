@@ -5,40 +5,47 @@
 <div class="col d-flex justify-content-center">
     <div class="card w-75">
         <div class="card-body">
-            <form>
+            <form id="positions_form" action="{{ url_for('invoice_form') }}" method="POST" novalidate>
                 {{ positions_form.csrf_token }}
                 <div class="form-row">
-                    <div class="form-group col-md-4">
+                    <div class="col-md-4">
                         {{ positions_form.unit.label }}
-                        {{ positions_form.unit(class="form-control", id="unit") }}
+                        {% if positions_form.unit.errors %}
+                        {{ positions_form.unit(class="form-control is-invalid", id="unit", **{'aria-describedby':"unitValidation"}) }}
+                        {% else %}
+                        {{ positions_form.unit(class="form-control", id="amount") }}
+                        {% endif %}
                         <!-- Error Message -->
                         {% for error in positions_form.unit.errors %}
-                        <div class="invalid-feedback">
+                        <div class="invalid-feedback" id="unitValidation">
                             {{ error }}
                         </div>
                         {% endfor %}
                     </div>
-                    <div class="form-group col-md-4">
+                    <div class="col-md-4">
                         {{ positions_form.amount.label }}
+                        {% if positions_form.amount.errors %}
+                        {{ positions_form.amount(class="form-control is-invalid", id="amount", **{'aria-describedby':"amountValidation"}) }}
+                        {% else %}
                         {{ positions_form.amount(class="form-control", id="amount") }}
+                        {% endif %}
                         <!-- Error Message -->
                         {% for error in positions_form.amount.errors %}
-                        <div class="invalid-feedback">
+                        <div class="invalid-feedback" id="amountValidation">
                             {{ error }}
                         </div>
                         {% endfor %}
                     </div>
-                    <div class="form-group col-md-4">
+                    <div class="col-md-4">
                         {{ positions_form.price.label }}
-                        <div class="input-group">
-                            {{ positions_form.price(class="form-control", id="price") }}
-                            <div class="input-group-append">
-                                <span class="input-group-text">€</span>
-                            </div>
-                        </div>
+                        {% if positions_form.price.errors %}
+                        {{ positions_form.price(class="form-control is-invalid", id="price", **{'aria-describedby':"priceValidation"}) }}
+                        {% else %}
+                        {{ positions_form.price(class="form-control", id="price") }}
+                        {% endif %}
                         <!-- Error Message -->
                         {% for error in positions_form.price.errors %}
-                        <div class="invalid-feedback">
+                        <div class="invalid-feedback" id="priceValidation">
                             {{ error }}
                         </div>
                         {% endfor %}
@@ -46,10 +53,14 @@
                 </div>
                 <div class="form-group">
                     {{ positions_form.description.label }}
+                    {% if positions_form.description.errors %}
+                    {{ positions_form.description(class="form-control is-invalid", id="description", **{'aria-describedby':"descriptionValidation"}) }}
+                    {% else %}
                     {{ positions_form.description(class="form-control", id="description") }}
+                    {% endif %}
                     <!-- Error Message -->
                     {% for error in positions_form.description.errors %}
-                    <div class="invalid-feedback">
+                    <div class="invalid-feedback" id="descriptionValidation">
                         {{ error }}
                     </div>
                     {% endfor %}
@@ -64,7 +75,7 @@
 <!-- positions form end -->
 <!-- positions table start -->
 <div class="hidden-content" id="positions-table-container">
-    <div class="col d-flex justify-content-center" id="positions-card">
+    <div class="col d-flex justify-content-center">
         <div class="card w-75">
             <div class="card-body">
                 <div class="table-responsive">
@@ -86,9 +97,44 @@
     </div>
 </div>
 <!-- positions table end -->
+<!-- invoice form start -->
+<div class="hidden-content" id="invoice-card-container">
+    <div class="col d-flex justify-content-center">
+        <div class="card w-75">
+            <div class="card-body">
+                <form>
+                    {{ invoice_form.csrf_token }}
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            {{ invoice_form.start_date.label }}
+                            {{ invoice_form.start_date(class="form-control", id="start_date") }}
+                            <!-- Error Message -->
+                            {% for error in invoice_form.start_date.errors %}
+                            <div class="invalid-feedback">
+                                {{ error }}
+                            </div>
+                            {% endfor %}
+                        </div>
+                        <div class="form-group col-md-6">
+                            {{ invoice_form.end_date.label }}
+                            {{ invoice_form.end_date(class="form-control", id="end_date") }}
+                            <!-- Error Message -->
+                            {% for error in invoice_form.end_date.errors %}
+                            <div class="invalid-feedback">
+                                {{ error }}
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="form-group text-center">
+                        <button class="btn btn-primary" id="invoice-submit" type="submit">Create Invoice</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- invoice form end -->
 {% endblock %}
 {% block script %}
-<script>
-    var url = "{{ url_for('positions_add') }}"
-</script>
 {% endblock %}

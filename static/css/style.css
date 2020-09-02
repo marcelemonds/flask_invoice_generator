@@ -5,3 +5,7 @@
 .hidden-content {
     display: none !important;
 }
+
+.alert {
+    margin-top: 1em;
+}

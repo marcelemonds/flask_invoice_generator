@@ -1,18 +1,25 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, IntegerField, FloatField, SelectField
 from wtforms.fields.html5 import DateField
-from wtforms.validators import DataRequired, Length
+from wtforms.validators import DataRequired, Length, ValidationError
 
 
 def integer_check(form, field):
     if type(field.data) != int:
-        raise ValidationError('Please insert a number!')
+        raise ValidationError('Please insert a numeric value!')
+    if field.data < 0:
+        raise ValidationError('Please enter a positive value!')
+
+
+def negativ_check(form, field):
+    if field.data < 0:
+        raise ValidationError('Please enter a positive value!')
 
 
 class PositionsForm(FlaskForm):
-    amount = FloatField('Amount')
-    unit = SelectField('Unit', choices=[('','...'),('Conversion','Conversion'),('Hour','Hour')])
-    price = FloatField('Price/Unit')
+    amount = FloatField('Amount', validators=[DataRequired(), negativ_check])
+    unit = SelectField('Unit', choices=[('','...'),('Conversion','Conversion'),('Hour','Hour')], validators=[DataRequired()])
+    price = FloatField('Price/Unit', validators=[DataRequired(), negativ_check])
     description = StringField('Description', validators=[DataRequired(), Length(max=500)])
 
 

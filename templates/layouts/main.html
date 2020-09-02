@@ -39,6 +39,42 @@
             </ul>
             </div>
         </nav>
+        <!-- messages start -->
+        
+        <div class="col d-flex justify-content-center">
+            <!-- render flashed messages -->
+            {% with messages = get_flashed_messages(category_filter=['success']) %}
+            {% if messages %}
+            <!-- success messages -->
+            {% for message in messages %}
+            <div class="alert alert-success" role="alert">
+                {{ message }}
+            </div>
+            {% endfor %}
+            {% endif %}
+            {% endwith %}
+            {% with messages = get_flashed_messages(category_filter=['warning']) %}
+            {% if messages %}
+            <!-- warning messages -->
+            {% for message in messages %}
+            <div class="alert alert-warning" role="alert">
+                {{ message }}
+            </div>
+            {% endfor %}
+            {% endif %}
+            {% endwith %}
+            {% with messages = get_flashed_messages(category_filter=['error']) %}
+            {% if messages %}
+            <!-- error messages -->
+            {% for message in messages %}
+            <div class="alert alert-danger" role="alert">
+                {{ message }}
+            </div>
+            {% endfor %}
+            {% endif %}
+            {% endwith %}
+        </div>
+        <!-- messages end -->
         {% block content %}{% endblock %}
         {% block script %}{% endblock %}
     </body>

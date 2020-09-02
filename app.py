@@ -2,12 +2,10 @@ from flask import Flask, render_template, jsonify, redirect, url_for, flash, req
 from forms import PositionsForm, InvoiceForm
 from models import setup_db, db_drop_and_create_all, Positions
 from decouple import config
-from flask_wtf.csrf import CSRFProtect
 
 def create_app():
     app = Flask(__name__)
     app.secret_key = config('SECRET_KEY', default='you-will-never-guess')
-    csrf = CSRFProtect(app)
     setup_db(app)
     db_drop_and_create_all()
 
@@ -57,5 +55,25 @@ def create_app():
             invoice_form=invoice_form,
             positions=positions
         )
+
+
+    @app.route('/position_delete', methods=['DELETE'])
+    def position_delete():
+        position_id = request.get_json()['position_id']
+        url = url_for('invoice_form')
+        try:
+            position = Positions.query.get(position_id)
+            position.delete()
+            flash('Position successfully deleted.', 'success')
+        except Exception as e:
+            flash('Position could not be deleted.', 'error')
+            flash(e, 'error')
+        
+        body = {
+            'url': url
+        }
+
+        return jsonify(body), 200
+
 
     return app

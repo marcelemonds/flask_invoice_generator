@@ -1,83 +1,270 @@
 {% extends "layouts/main.html" %}
 
 {% block content %}
-<!-- positions form start -->
 <div class="col d-flex justify-content-center">
-    <div class="card w-75">
+    <div class="card w-75 top-margin">
         <div class="card-body">
-            <form id="positions_form" action="{{ url_for('invoice_form') }}" method="POST" novalidate>
-                {{ positions_form.csrf_token }}
-                <div class="form-row">
-                    <div class="col-md-4">
-                        {{ positions_form.unit.label }}
-                        {% if positions_form.unit.errors %}
-                        {{ positions_form.unit(class="form-control is-invalid", id="unit", **{'aria-describedby':"unitValidation"}) }}
-                        {% else %}
-                        {{ positions_form.unit(class="form-control", id="amount") }}
-                        {% endif %}
-                        <!-- Error Message -->
-                        {% for error in positions_form.unit.errors %}
-                        <div class="invalid-feedback" id="unitValidation">
-                            {{ error }}
-                        </div>
-                        {% endfor %}
+            <div class="accordion" id="accordionForm">
+                <div class="card">
+                    <div class="card-header" id="headingOne">
+                        <h2 class="mb-0">
+                        <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                            Positions Form
+                        </button>
+                        </h2>
                     </div>
-                    <div class="col-md-4">
-                        {{ positions_form.amount.label }}
-                        {% if positions_form.amount.errors %}
-                        {{ positions_form.amount(class="form-control is-invalid", id="amount", **{'aria-describedby':"amountValidation"}) }}
-                        {% else %}
-                        {{ positions_form.amount(class="form-control", id="amount") }}
-                        {% endif %}
-                        <!-- Error Message -->
-                        {% for error in positions_form.amount.errors %}
-                        <div class="invalid-feedback" id="amountValidation">
-                            {{ error }}
+                    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionForm">
+                        <div class="card-body">
+                            <!-- positions form start -->
+                            <form action="{{ url_for('invoice_form') }}" method="POST" novalidate>
+                                {{ positions_form.csrf_token }}
+                                <div class="form-row">
+                                    <div class="col-md-4">
+                                        {{ positions_form.unit.label }}
+                                        {% if positions_form.unit.errors %}
+                                        {{ positions_form.unit(class="form-control is-invalid", id="unit", **{'aria-describedby':"unitValidation"}) }}
+                                        {% else %}
+                                        {{ positions_form.unit(class="form-control", id="amount") }}
+                                        {% endif %}
+                                        <!-- Error Message -->
+                                        {% for error in positions_form.unit.errors %}
+                                        <div class="invalid-feedback" id="unitValidation">
+                                            {{ error }}
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                    <div class="col-md-4">
+                                        {{ positions_form.amount.label }}
+                                        {% if positions_form.amount.errors %}
+                                        {{ positions_form.amount(class="form-control is-invalid", id="amount", **{'aria-describedby':"amountValidation"}) }}
+                                        {% else %}
+                                        {{ positions_form.amount(class="form-control", id="amount") }}
+                                        {% endif %}
+                                        <!-- Error Message -->
+                                        {% for error in positions_form.amount.errors %}
+                                        <div class="invalid-feedback" id="amountValidation">
+                                            {{ error }}
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                    <div class="col-md-4">
+                                        {{ positions_form.price.label }}
+                                        {% if positions_form.price.errors %}
+                                        {{ positions_form.price(class="form-control is-invalid", id="price", **{'aria-describedby':"priceValidation"}) }}
+                                        {% else %}
+                                        {{ positions_form.price(class="form-control", id="price") }}
+                                        {% endif %}
+                                        <!-- Error Message -->
+                                        {% for error in positions_form.price.errors %}
+                                        <div class="invalid-feedback" id="priceValidation">
+                                            {{ error }}
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    {{ positions_form.description.label }}
+                                    {% if positions_form.description.errors %}
+                                    {{ positions_form.description(class="form-control is-invalid", id="description", **{'aria-describedby':"descriptionValidation"}) }}
+                                    {% else %}
+                                    {{ positions_form.description(class="form-control", id="description") }}
+                                    {% endif %}
+                                    <!-- Error Message -->
+                                    {% for error in positions_form.description.errors %}
+                                    <div class="invalid-feedback" id="descriptionValidation">
+                                        {{ error }}
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                                <div class="form-group text-center">
+                                    <button class="btn btn-primary" id="positions-submit" type="submit">Add Position</button>
+                                </div>
+                            </form>
+                            <!-- positions form end -->
                         </div>
-                        {% endfor %}
                     </div>
-                    <div class="col-md-4">
-                        {{ positions_form.price.label }}
-                        {% if positions_form.price.errors %}
-                        {{ positions_form.price(class="form-control is-invalid", id="price", **{'aria-describedby':"priceValidation"}) }}
-                        {% else %}
-                        {{ positions_form.price(class="form-control", id="price") }}
-                        {% endif %}
-                        <!-- Error Message -->
-                        {% for error in positions_form.price.errors %}
-                        <div class="invalid-feedback" id="priceValidation">
-                            {{ error }}
+                    </div>
+                    {% if positions %}
+                    <div class="card">
+                    <div class="card-header" id="headingTwo">
+                        <h2 class="mb-0">
+                        <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                            Invoice Form
+                        </button>
+                        </h2>
+                    </div>
+                    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionForm">
+                        <div class="card-body">
+                            <!-- invoice form start -->
+                            <form action="{{ url_for('invoice_form') }}" method="POST" novalidate>
+                                {{ invoice_form.csrf_token }}
+                                <div class="form-row">
+                                    <div class="form-group col-md-4">
+                                        {{ invoice_form.start_date.label }}
+                                        {% if invoice_form.start_date.errors %}
+                                        {{ invoice_form.start_date(class="form-control is-invalid", id="start_date", **{'aria-describedby':"startDateValidation"}) }}
+                                        {% else %}
+                                        {{ invoice_form.start_date(class="form-control", id="start_date") }}
+                                        {% endif %}
+                                        <!-- Error Message -->
+                                        {% for error in invoice_form.start_date.errors %}
+                                        <div class="invalid-feedback" id="startDateValidation">
+                                            {{ error }}
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        {{ invoice_form.end_date.label }}
+                                        {% if invoice_form.end_date.errors %}
+                                        {{ invoice_form.end_date(class="form-control is-invalid", id="end_date", **{'aria-describedby':"endDateValidation"}) }}
+                                        {% else %}
+                                        {{ invoice_form.end_date(class="form-control", id="end_date") }}
+                                        {% endif %}
+                                        <!-- Error Message -->
+                                        {% for error in invoice_form.end_date.errors %}
+                                        <div class="invalid-feedback" id="endDateValidation">
+                                            {{ error }}
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        {{ invoice_form.invoice_number.label }}
+                                        {% if invoice_form.invoice_number.errors %}
+                                        {{ invoice_form.invoice_number(class="form-control is-invalid", id="invoice_number", **{'aria-describedby':"invoiceNumberValidation"}) }}
+                                        {% else %}
+                                        {{ invoice_form.invoice_number(class="form-control", id="invoice_number") }}
+                                        {% endif %}
+                                        <!-- Error Message -->
+                                        {% for error in invoice_form.invoice_number.errors %}
+                                        <div class="invalid-feedback" id="invoiceNumberValidation">
+                                            {{ error }}
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-4">
+                                        {{ invoice_form.company_name.label }}
+                                        {% if invoice_form.company_name.errors %}
+                                        {{ invoice_form.company_name(class="form-control is-invalid", id="company_name", **{'aria-describedby':"companyNameValidation"}) }}
+                                        {% else %}
+                                        {{ invoice_form.company_name(class="form-control", id="company_name") }}
+                                        {% endif %}
+                                        <!-- Error Message -->
+                                        {% for error in invoice_form.company_name.errors %}
+                                        <div class="invalid-feedback" id="companyNameValidation">
+                                            {{ error }}
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        {{ invoice_form.firstname.label }}
+                                        {% if invoice_form.firstname.errors %}
+                                        {{ invoice_form.firstname(class="form-control is-invalid", id="firstname", **{'aria-describedby':"firstNameValidation"}) }}
+                                        {% else %}
+                                        {{ invoice_form.firstname(class="form-control", id="firstname") }}
+                                        {% endif %}
+                                        <!-- Error Message -->
+                                        {% for error in invoice_form.firstname.errors %}
+                                        <div class="invalid-feedback" id="firstNameValidation">
+                                            {{ error }}
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        {{ invoice_form.lastname.label }}
+                                        {% if invoice_form.lastname.errors %}
+                                        {{ invoice_form.lastname(class="form-control is-invalid", id="lastname", **{'aria-describedby':"lastNameValidation"}) }}
+                                        {% else %}
+                                        {{ invoice_form.lastname(class="form-control", id="lastname") }}
+                                        {% endif %}
+                                        <!-- Error Message -->
+                                        {% for error in invoice_form.lastname.errors %}
+                                        <div class="invalid-feedback" id="lastNameValidation">
+                                            {{ error }}
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-10">
+                                        {{ invoice_form.street.label }}
+                                        {% if invoice_form.street.errors %}
+                                        {{ invoice_form.street(class="form-control is-invalid", id="street", **{'aria-describedby':"streetValidation"}) }}
+                                        {% else %}
+                                        {{ invoice_form.street(class="form-control", id="street") }}
+                                        {% endif %}
+                                        <!-- Error Message -->
+                                        {% for error in invoice_form.street.errors %}
+                                        <div class="invalid-feedback" id="streetValidation">
+                                            {{ error }}
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                    <div class="form-group col-md-2">
+                                        {{ invoice_form.house_number.label }}
+                                        {% if invoice_form.house_number.errors %}
+                                        {{ invoice_form.house_number(class="form-control is-invalid", id="house_number", **{'aria-describedby':"houseNumberValidation"}) }}
+                                        {% else %}
+                                        {{ invoice_form.house_number(class="form-control", id="house_number") }}
+                                        {% endif %}
+                                        <!-- Error Message -->
+                                        {% for error in invoice_form.house_number.errors %}
+                                        <div class="invalid-feedback" id="houseNumberValidation">
+                                            {{ error }}
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-2">
+                                        {{ invoice_form.zip_code.label }}
+                                        {% if invoice_form.zip_code.errors %}
+                                        {{ invoice_form.zip_code(class="form-control is-invalid", id="zip_code", **{'aria-describedby':"zipCodeValidation"}) }}
+                                        {% else %}
+                                        {{ invoice_form.zip_code(class="form-control", id="zip_code") }}
+                                        {% endif %}
+                                        <!-- Error Message -->
+                                        {% for error in invoice_form.zip_code.errors %}
+                                        <div class="invalid-feedback" id="zipCodeValidation">
+                                            {{ error }}
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                    <div class="form-group col-md-10">
+                                        {{ invoice_form.city.label }}
+                                        {% if invoice_form.city.errors %}
+                                        {{ invoice_form.city(class="form-control is-invalid", id="city", **{'aria-describedby':"cityValidation"}) }}
+                                        {% else %}
+                                        {{ invoice_form.city(class="form-control", id="city") }}
+                                        {% endif %}
+                                        <!-- Error Message -->
+                                        {% for error in invoice_form.city.errors %}
+                                        <div class="invalid-feedback" id="cityValidation">
+                                            {{ error }}
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                                <div class="form-group text-center">
+                                    <button class="btn btn-primary" id="invoice-submit" type="submit">Create Invoice</button>
+                                </div>
+                            </form>
+                            <!-- invoice form end -->
                         </div>
-                        {% endfor %}
                     </div>
-                </div>
-                <div class="form-group">
-                    {{ positions_form.description.label }}
-                    {% if positions_form.description.errors %}
-                    {{ positions_form.description(class="form-control is-invalid", id="description", **{'aria-describedby':"descriptionValidation"}) }}
-                    {% else %}
-                    {{ positions_form.description(class="form-control", id="description") }}
                     {% endif %}
-                    <!-- Error Message -->
-                    {% for error in positions_form.description.errors %}
-                    <div class="invalid-feedback" id="descriptionValidation">
-                        {{ error }}
-                    </div>
-                    {% endfor %}
                 </div>
-                <div class="form-group text-center">
-                    <button class="btn btn-primary" id="positions-submit" type="submit">Add Position</button>
-                </div>
-            </form>
+            </div>
         </div>
     </div>
 </div>
-<!-- positions form end -->
 {% if positions %}
 <!-- positions table start -->
 <div class="col d-flex justify-content-center">
-    <div class="card w-75">
+    <div class="card w-75 top-margin">
         <div class="card-body">
+            <h5 class="card-title">Positions Table</h5>
             <div class="table-responsive">
                 <table class="table table-hover">
                     <thead class="thead-dark">
@@ -97,8 +284,8 @@
                             <td>{{ position.unit }}</td>
                             <td>{{ position.amount }}</td>
                             <td>{{ position.description }}</td>
-                            <td>{{ position.price }}</td>
-                            <td>{{ position.total }}</td>
+                            <td>{{ position.price|currencyFormat }}</td>
+                            <td>{{ position.total|currencyFormat }}</td>
                         </tr>
                         {% endfor %}
                     </tbody>
@@ -108,42 +295,6 @@
     </div>
 </div>
 <!-- positions table end -->
-<!-- invoice form start -->
-<div class="col d-flex justify-content-center">
-    <div class="card w-75">
-        <div class="card-body">
-            <form>
-                {{ invoice_form.csrf_token }}
-                <div class="form-row">
-                    <div class="form-group col-md-6">
-                        {{ invoice_form.start_date.label }}
-                        {{ invoice_form.start_date(class="form-control", id="start_date") }}
-                        <!-- Error Message -->
-                        {% for error in invoice_form.start_date.errors %}
-                        <div class="invalid-feedback">
-                            {{ error }}
-                        </div>
-                        {% endfor %}
-                    </div>
-                    <div class="form-group col-md-6">
-                        {{ invoice_form.end_date.label }}
-                        {{ invoice_form.end_date(class="form-control", id="end_date") }}
-                        <!-- Error Message -->
-                        {% for error in invoice_form.end_date.errors %}
-                        <div class="invalid-feedback">
-                            {{ error }}
-                        </div>
-                        {% endfor %}
-                    </div>
-                </div>
-                <div class="form-group text-center">
-                    <button class="btn btn-primary" id="invoice-submit" type="submit">Create Invoice</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-<!-- invoice form end -->
 {% endif %}
 {% endblock %}
 {% block script %}

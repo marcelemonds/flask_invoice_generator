@@ -25,8 +25,9 @@ class PositionsForm(FlaskForm):
 
 class InvoiceForm(FlaskForm):
     start_date = DateField('Start', validators=[DataRequired()])
-    end_date = DateField('Ende', validators=[DataRequired()])
-    company_name = StringField('Company')
+    end_date = DateField('End', validators=[DataRequired()])
+    invoice_number = StringField('Invoice #', validators=[DataRequired()])
+    company_name = StringField('Company', validators=[DataRequired()])
     firstname = StringField('Firstname', validators=[DataRequired()])
     lastname = StringField('Lastname', validators=[DataRequired()])
     street = StringField('Street', validators=[DataRequired()])

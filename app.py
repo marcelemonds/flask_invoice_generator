@@ -1,11 +1,15 @@
 from flask import Flask, render_template, jsonify, redirect, url_for, flash, request
 from forms import PositionsForm, InvoiceForm
 from models import setup_db, db_drop_and_create_all, Positions
+from filters import currencyFormat
 from decouple import config
+import datetime
+from random import randint
 
 def create_app():
     app = Flask(__name__)
     app.secret_key = config('SECRET_KEY', default='you-will-never-guess')
+    app.jinja_env.filters['currencyFormat'] = currencyFormat
     setup_db(app)
     db_drop_and_create_all()
 
@@ -42,6 +46,23 @@ def create_app():
 
                 flash('Position succesfully added!', 'success')
                 success = True
+            elif invoice_form.validate_on_submit():
+                client = invoice_form.data
+                positions = Positions.query.all()
+                total = 0
+                for position in positions:
+                    total += position.total
+                today = datetime.date.today()
+                payment_due = today + datetime.timedelta(days=14)
+
+                return render_template('/invoice_details.html',
+                    title=f'Invoice Details',
+                    client=client,
+                    positions=positions,
+                    today=today,
+                    payment_due=payment_due,
+                    total=total
+                )
             else:
                 flash('Please check your form input!', 'error')
 
@@ -74,6 +95,5 @@ def create_app():
         }
 
         return jsonify(body), 200
-
 
     return app

@@ -1,4 +1,4 @@
-.card {
+.top-margin {
     margin-top: 1em;
 }
 
@@ -8,4 +8,9 @@
 
 .alert {
     margin-top: 1em;
+}
+
+.btn-link {
+    text-decoration: none !important;
+    color: black !important;
 }

@@ -20,19 +20,19 @@
                     <div class="row pb-5 p-5">
                         <div class="col-md-6">
                             <p class="font-weight-bold mb-4">Client Information</p>
-                            <p class="mb-1">{{ client.firstname }} {{ client.lastname }}</p>
-                            <p>{{ client.company_name }}</p>
-                            <p class="mb-1">{{ client.street }} {{ client.house_number }}</p>
-                            <p class="mb-1">{{ client.zip_code }} {{ client.city }}</p>
+                            <p class="mb-1">{{ invoice_details.firstname }} {{ invoice_details.lastname }}</p>
+                            <p>{{ invoice_details.company_name }}</p>
+                            <p class="mb-1">{{ invoice_details.street }} {{ invoice_details.house_number }}</p>
+                            <p class="mb-1">{{ invoice_details.zip_code }} {{ invoice_details.city }}</p>
                         </div>
 
                         <div class="col-md-6 text-right">
                             <p class="font-weight-bold mb-4">Invoice Details</p>
-                            <p class="mb-1"><span class="text-muted">Invoice #: </span>{{ client.invoice_number }}</p>
+                            <p class="mb-1"><span class="text-muted">Invoice #: </span>{{ invoice_details.invoice_number }}</p>
                             <p class="mb-1"><span class="text-muted">Billing Date: </span>{{ today.strftime('%d.%m.%Y') }}</p>
                             <p class="mb-1"><span class="text-muted">Due to: </span>{{ payment_due.strftime('%d.%m.%Y') }}</p>
-                            <p class="mb-1"><span class="text-muted">Invoice Period Start: </span>{{ client.start_date.strftime('%d.%m.%Y') }}</p>
-                            <p class="mb-1"><span class="text-muted">Invoice Period End: </span>{{ client.end_date.strftime('%d.%m.%Y') }}</p>
+                            <p class="mb-1"><span class="text-muted">Invoice Period Start: </span>{{ invoice_details.start_date.strftime('%d.%m.%Y') }}</p>
+                            <p class="mb-1"><span class="text-muted">Invoice Period End: </span>{{ invoice_details.end_date.strftime('%d.%m.%Y') }}</p>
                         </div>
                     </div>
 

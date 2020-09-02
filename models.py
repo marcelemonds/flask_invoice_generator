@@ -35,3 +35,27 @@ class Positions(db.Model):
     def delete(self):
         db.session.delete(self)
         db.session.commit()
+
+
+class InvoiceDetails(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    start_date = db.Column(db.Date)
+    end_date = db.Column(db.Date)
+    invoice_number = db.Column(db.String(100))
+    company_name = db.Column(db.String(100))
+    firstname = db.Column(db.String(100))
+    lastname = db.Column(db.String(100))
+    street = db.Column(db.String(100))
+    house_number = db.Column(db.String(5))
+    city = db.Column(db.String(100))
+    zip_code = db.Column(db.Integer)
+
+    def insert(self):
+        db.session.add(self)
+        db.session.commit()
+
+    def update(self, **kwargs):
+        for key, value in kwargs.items():
+            if hasattr(self, key):
+                setattr(self, key, value)
+        db.session.commit()

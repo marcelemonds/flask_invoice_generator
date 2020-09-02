@@ -1,6 +1,6 @@
 from flask import Flask, render_template, jsonify, redirect, url_for, flash, request
 from forms import PositionsForm, InvoiceForm
-from models import setup_db, db_drop_and_create_all, Positions
+from models import setup_db, db_drop_and_create_all, Positions, InvoiceDetails
 from filters import currencyFormat
 from decouple import config
 import datetime
@@ -25,8 +25,9 @@ def create_app():
 
     @app.route('/invoice_data', methods=['GET', 'POST'])
     def invoice_form():
+        invoice_details = InvoiceDetails.query.one_or_none()
         positions_form = PositionsForm(prefix='positions')
-        invoice_form = InvoiceForm(prefix='invoice')
+        invoice_form = InvoiceForm(prefix='invoice', obj=invoice_details)
 
         if request.method == 'POST':
             if positions_form.validate_on_submit():
@@ -47,7 +48,14 @@ def create_app():
                 flash('Position succesfully added!', 'success')
                 success = True
             elif invoice_form.validate_on_submit():
-                client = invoice_form.data
+                form_invoice_details = invoice_form.data
+                form_invoice_details.pop('csrf_token', None)
+                if invoice_details is None:
+                    invoice_details = InvoiceDetails(**form_invoice_details)
+                    invoice_details.insert()
+                else:
+                    invoice_details.update(**form_invoice_details)
+
                 positions = Positions.query.all()
                 total = 0
                 for position in positions:
@@ -57,7 +65,7 @@ def create_app():
 
                 return render_template('/invoice_details.html',
                     title=f'Invoice Details',
-                    client=client,
+                    invoice_details=invoice_details,
                     positions=positions,
                     today=today,
                     payment_due=payment_due,

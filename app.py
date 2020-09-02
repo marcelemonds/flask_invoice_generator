@@ -1,10 +1,13 @@
-from flask import Flask, render_template, jsonify, redirect, url_for, flash, request
+from flask import Flask, render_template, jsonify, redirect, url_for, flash, request, send_file
 from forms import PositionsForm, InvoiceForm
 from models import setup_db, db_drop_and_create_all, Positions, InvoiceDetails
 from filters import currencyFormat
 from decouple import config
+from weasyprint import HTML
+import io
 import datetime
 from random import randint
+
 
 def create_app():
     app = Flask(__name__)
@@ -64,7 +67,7 @@ def create_app():
                 payment_due = today + datetime.timedelta(days=14)
 
                 return render_template('/invoice_details.html',
-                    title=f'Invoice Details',
+                    title='Invoice Details',
                     invoice_details=invoice_details,
                     positions=positions,
                     today=today,
@@ -103,5 +106,42 @@ def create_app():
         }
 
         return jsonify(body), 200
+
+
+    @app.route('/invoice_pdf', methods=['POST'])
+    def invoice_pdf():
+        invoice_details = InvoiceDetails.query.one_or_none()
+        positions = Positions.query.all()
+        total = 0
+        for position in positions:
+            total += position.total
+        created = datetime.date.today()
+        payment_due = today + datetime.timedelta(days=14)
+        try:
+            rendered = render_template('/invoice_details_pdf.html',
+                        invoice_details=invoice_details,
+                        positions=positions,
+                        created=created,
+                        payment_due=payment_due,
+                        total=total
+                    )
+            html = HTML(string=rendered)
+            invoice_pdf = html.write_pdf('/invoice_details_pdf.html')
+            return send_file(
+                io.BytesIO(invoice_pdf),
+                attachement_filename=f'invoice_{invoice_details.invoice_number}'
+            )
+        except Exception as e:
+            flash('An error occored and the pdf invoice could not be created.', 'error')
+            flash(e, 'error')
+
+            return render_template('/invoice_details.html',
+                title='Invoice Details',
+                invoice_details=invoice_details,
+                positions=positions,
+                today=today,
+                payment_due=payment_due,
+                total=total
+            )
 
     return app

@@ -29,7 +29,7 @@
                         <div class="col-md-6 text-right">
                             <p class="font-weight-bold mb-4">Invoice Details</p>
                             <p class="mb-1"><span class="text-muted">Invoice #: </span>{{ invoice_details.invoice_number }}</p>
-                            <p class="mb-1"><span class="text-muted">Billing Date: </span>{{ today.strftime('%d.%m.%Y') }}</p>
+                            <p class="mb-1"><span class="text-muted">Billing Date: </span>{{ created.strftime('%d.%m.%Y') }}</p>
                             <p class="mb-1"><span class="text-muted">Due to: </span>{{ payment_due.strftime('%d.%m.%Y') }}</p>
                             <p class="mb-1"><span class="text-muted">Invoice Period Start: </span>{{ invoice_details.start_date.strftime('%d.%m.%Y') }}</p>
                             <p class="mb-1"><span class="text-muted">Invoice Period End: </span>{{ invoice_details.end_date.strftime('%d.%m.%Y') }}</p>

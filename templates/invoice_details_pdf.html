@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <!-- Custom CSS -->
+        <link rel="stylesheet" type="text/css" href="/static/css/style.css">
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+
+        <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous" defer></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous" defer></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous" defer></script>
+        <!-- Custom Javascript -->
+        <script type="text/javascript" charset="utf8" src="{{ url_for('static', filename='js/scripts.js')}}" defer></script>
+    </head>
+    <body>
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card top-margin">
+                        <div class="card-body p-0">
+                            <div class="row p-5">
+                                <div class="col-md-12 text-right">
+                                    <p class="mb-1">Musterfirma</p>
+                                    <p>Max Mustermann</p>
+                                    <p class="mb-1">Musterstraße 42</p>
+                                    <p class="mb-1">12345 Musterstadt</p>
+                                </div>
+                            </div>
+        
+                            <hr class="my-5">
+        
+                            <div class="row pb-5 p-5">
+                                <div class="col-md-6">
+                                    <p class="font-weight-bold mb-4">Client Information</p>
+                                    <p class="mb-1">{{ invoice_details.firstname }} {{ invoice_details.lastname }}</p>
+                                    <p>{{ invoice_details.company_name }}</p>
+                                    <p class="mb-1">{{ invoice_details.street }} {{ invoice_details.house_number }}</p>
+                                    <p class="mb-1">{{ invoice_details.zip_code }} {{ invoice_details.city }}</p>
+                                </div>
+        
+                                <div class="col-md-6 text-right">
+                                    <p class="font-weight-bold mb-4">Invoice Details</p>
+                                    <p class="mb-1"><span class="text-muted">Invoice #: </span>{{ invoice_details.invoice_number }}</p>
+                                    <p class="mb-1"><span class="text-muted">Billing Date: </span>{{ created.strftime('%d.%m.%Y') }}</p>
+                                    <p class="mb-1"><span class="text-muted">Due to: </span>{{ payment_due.strftime('%d.%m.%Y') }}</p>
+                                    <p class="mb-1"><span class="text-muted">Invoice Period Start: </span>{{ invoice_details.start_date.strftime('%d.%m.%Y') }}</p>
+                                    <p class="mb-1"><span class="text-muted">Invoice Period End: </span>{{ invoice_details.end_date.strftime('%d.%m.%Y') }}</p>
+                                </div>
+                            </div>
+        
+                            <div class="row p-5">
+                                <div class="col-md-12">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th class="border-0 text-uppercase small font-weight-bold">ID</th>
+                                                <th class="border-0 text-uppercase small font-weight-bold">Amount</th>
+                                                <th class="border-0 text-uppercase small font-weight-bold">Unit</th>
+                                                <th class="border-0 text-uppercase small font-weight-bold">Description</th>
+                                                <th class="border-0 text-uppercase small font-weight-bold">Unit Cost</th>
+                                                <th class="border-0 text-uppercase small font-weight-bold">Total</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for position in positions %}
+                                            <tr>
+                                                <td>{{ loop.index }}</td>
+                                                <td>{{ position.amount }}</td>
+                                                <td>{{ position.unit }}</td>
+                                                <td>{{ position.description }}</td>
+                                                <td>{{ position.price|currencyFormat }}</td>
+                                                <td>{{ position.total|currencyFormat }}</td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="d-flex flex-row-reverse bg-dark text-white p-4">
+                                <div class="py-3 px-5 text-right">
+                                    <div class="mb-2">Grand Total</div>
+                                    <div class="h2 font-weight-light">{{ total|currencyFormat }}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
